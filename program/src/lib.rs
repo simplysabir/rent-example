@@ -1,9 +1,6 @@
-mod add;
-mod initialize;
+mod create_account;
 
-use add::*;
-use initialize::*;
-        
+use create_account::*;
 use rent_example_api::prelude::*;
 use steel::*;
 
@@ -12,11 +9,10 @@ pub fn process_instruction(
     accounts: &[AccountInfo],
     data: &[u8],
 ) -> ProgramResult {
-    let (ix, data) = parse_instruction(&rent_example_api::ID, program_id, data)?;
+    let (ix, data) = parse_instruction::<RentInstruction>(&rent_example_api::ID, program_id, data)?;
 
     match ix {
-        RentExampleInstruction::Initialize => process_initialize(accounts, data)?,
-        RentExampleInstruction::Add => process_add(accounts, data)?,
+        RentInstruction::CreateSystemAccount => process_create_account(accounts, data)?,
     }
 
     Ok(())
